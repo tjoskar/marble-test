@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/scan';
 import test from 'ava';
 import { Observable } from 'rxjs/Observable';
-import { createColdObservable, createRxTestScheduler, getRxTestScheduler, flush, expectObservable } from '.';
+import { createRxTestScheduler } from '.';
 
 export const mapToNumber = string$ => string$.map(s => Number(s));
 
@@ -20,49 +20,49 @@ export const retryOnError = (delayTime: number, scheduler?) =>{
 
 test('map to number', () => {
   // Arrange
-  createRxTestScheduler();
+  const scheduler = createRxTestScheduler();
   const values = { a: '1', b: '2', 1: 1, 2: 2 };
   const input =  'a--b|';
   const output = '1--2|';
-  const number$ = createColdObservable(input, values);
+  const number$ = scheduler.createColdObservable(input, values);
   
   // Act
   const obs = mapToNumber(number$);
 
   // Assert
-  expectObservable(obs).toBe(output, values);
-  flush();
+  scheduler.expectObservable(obs).toBe(output, values);
+  scheduler.flush();
 });
 
 test('count errors', () => {
   // Arrange
-  createRxTestScheduler();
+  const scheduler = createRxTestScheduler();
   const values = { a: new Error(), b: new Error(), 1: 1, 2: 2 };
   const input =  'a--b|';
   const output = '1--2|';
-  const error$ = createColdObservable(input, values);
+  const error$ = scheduler.createColdObservable(input, values);
 
   // Act
-  const obs = retryOnError(0, getRxTestScheduler())(error$);
+  const obs = retryOnError(0, scheduler)(error$);
 
   // Assert
-  expectObservable(obs).toBe(output, values);
-  flush();
+  scheduler.expectObservable(obs).toBe(output, values);
+  scheduler.flush();
 });
 
 test('rethrow after 2 tries', () => {
   // Arrange
-  createRxTestScheduler();
+  const scheduler = createRxTestScheduler();
   const error = new Error();
   const values = { a: error, 1: 1, 2: 2 };
   const input =  'a--a--a';
   const output = '1--2--#';
-  const error$ = createColdObservable(input, values);
+  const error$ = scheduler.createColdObservable(input, values);
 
   // Act
-  const obs = retryOnError(0, getRxTestScheduler())(error$);
+  const obs = retryOnError(0, scheduler)(error$);
 
   // Assert
-  expectObservable(obs).toBe(output, values, error);
-  flush();
+  scheduler.expectObservable(obs).toBe(output, values, error);
+  scheduler.flush();
 });

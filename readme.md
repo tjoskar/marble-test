@@ -11,24 +11,24 @@ $ npm install --save-dev marble-test
 ## Example usage
 
 ```js
-import { createColdObservable, createRxTestScheduler, flush, expectObservable } from 'marble-test';
+import { createRxTestScheduler } from 'marble-test';
 
 export const mapToNumber$ = string$ => string$.map(s => Number(s));
 
 test('map to number', () => {
   // Arrange
-  createRxTestScheduler();
+  const scheduler = createRxTestScheduler();
   const values = { a: '1', b: '2', 1: 1, 2: 2 };
   const input =  'a--b|';
   const output = '1--2|';
-  const number$ = createColdObservable(input, values);
+  const number$ = scheduler.createColdObservable(input, values);
   
   // Act
-  const obs = mapToNumber$(number$);
+  const obs = mapToNumber(number$);
 
   // Assert
-  expectObservable(obs).toBe(output, values);
-  flush();
+  scheduler.expectObservable(obs).toBe(output, values);
+  scheduler.flush();
 });
 ```
 See the [test file](test.ts) for more examples

@@ -1,29 +1,7 @@
 import { TestScheduler } from 'rxjs/testing/TestScheduler';
-import { ColdObservable } from 'rxjs/testing/ColdObservable';
-import { HotObservable } from 'rxjs/testing/HotObservable';
 const isEqual = require('lodash.isequal');
 
-let rxTestScheduler: TestScheduler = null;
-
-export const getRxTestScheduler = () => rxTestScheduler;
-export const createRxTestScheduler = () => rxTestScheduler = new TestScheduler(assertDeepEqualFrame);
-export const flush = () => rxTestScheduler.flush();
-
-export function createHotObservable<T>(marbles: string, values?: any) {
-  return getRxTestScheduler().createHotObservable<T>(marbles, values);
-}
-
-export function createColdObservable<T>(marbles: string, values?: any) {
-  return getRxTestScheduler().createColdObservable<T>(marbles, values);
-}
-
-export function expectObservable(abservable) {
-  return getRxTestScheduler().expectObservable(abservable);
-}
-
-export function expectSubscriptions(actualSubscriptionLogs) {
-  return getRxTestScheduler().expectSubscriptions(actualSubscriptionLogs);
-}
+export const createRxTestScheduler = () => new TestScheduler(assertDeepEqualFrame);
 
 export function stringifyFrame(x) {
   let value = x.notification.value === undefined ? '' : x.notification.value;

@@ -1,6 +1,6 @@
 {
   "name": "marble-test",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Helps you write marble tests",
   "license": "MIT",
   "repository": "tjoskar/marble-test",
