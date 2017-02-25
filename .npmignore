@@ -2,5 +2,5 @@
 .gitattributes
 .gitignore
 *.ts
-!*.d.ts
+!index.d.ts
 tsconfig.json
