@@ -3,7 +3,7 @@ const isEqual = require('lodash.isequal');
 
 export const createRxTestScheduler = () => new TestScheduler(assertDeepEqualFrame);
 
-export function stringifyFrame(x) {
+function stringifyFrame(x) {
   let value = x.notification.value === undefined ? '' : x.notification.value;
   if (typeof value === 'string') {
     value = `'${value}'`;
