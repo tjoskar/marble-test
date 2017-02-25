@@ -1,6 +1,5 @@
 .editorconfig
 .gitattributes
 .gitignore
-*.ts
-!index.d.ts
 tsconfig.json
+!index.d.ts
