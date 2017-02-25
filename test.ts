@@ -24,10 +24,10 @@ test('map to number', () => {
   const values = { a: '1', b: '2', 1: 1, 2: 2 };
   const input =  'a--b|';
   const output = '1--2|';
-  const number$ = scheduler.createColdObservable(input, values);
+  const strings$ = scheduler.createColdObservable(input, values);
   
   // Act
-  const obs = mapToNumber(number$);
+  const obs = mapToNumber(strings$);
 
   // Assert
   scheduler.expectObservable(obs).toBe(output, values);
