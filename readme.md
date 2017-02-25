@@ -4,7 +4,7 @@
 ## Install
 
 ```
-$ npm install --save-dev marble-tests
+$ npm install --save-dev marble-test
 ```
 
 
