@@ -1,5 +1,3 @@
-# marble-tests [![Build Status](https://travis-ci.org/tjoskar/marble-tests.svg?branch=master)](https://travis-ci.org/tjoskar/marble-tests)
-
 > Helps you write marble tests
 
 
@@ -36,7 +34,7 @@ test('map to number', () => {
 See the [test file](test.ts) for more examples
 
 Gives detailed outputs on assert failure.
-You will example get the following output when changing `output` above to `a--2|`
+e.g., You will get the following output when changing `output` above to `a--2|`
 
 ```
   Error:
