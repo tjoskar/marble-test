@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "lib": ["es2017", "dom"],
+    "types" : ["node"],
+    "moduleResolution": "node",
+    "alwaysStrict": true,
+    "noImplicitThis": true,
+    "declaration": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "marble-test",
+  "version": "1.0.0",
+  "description": "Helps you write marble tests",
+  "license": "MIT",
+  "repository": "tjoskar/marble-test",
+  "author": {
+    "name": "Oskar Karlsson",
+    "email": "kontakta@oskarkarlsson.nu",
+    "url": "oskarkarlsson.nu"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "prepublish": "tsc",
+    "test": "tsc && ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    ""
+  ],
+  "peerDependencies": {
+    "rxjs": "^5.2.0"
+  },
+  "dependencies": {
+    "lodash.isequal": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.5",
+    "ava": "^0.18.2",
+    "rxjs": "^5.2.0",
+    "typescript": "^2.2.1"
+  }
+}

@@ -1,0 +1,6 @@
+.editorconfig
+.gitattributes
+.gitignore
+*.ts
+!*.d.ts
+tsconfig.json
