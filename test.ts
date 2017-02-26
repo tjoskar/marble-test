@@ -39,11 +39,11 @@ test('count errors', () => {
   const scheduler = createRxTestScheduler();
   const values = { a: new Error(), b: new Error(), 1: 1, 2: 2 };
   const input =  'a--b|';
-  const output = '1--2|';
+  const output = '-1--2|'; // delay with 10 ms
   const error$ = scheduler.createColdObservable(input, values);
 
   // Act
-  const obs = retryOnError(0, scheduler)(error$);
+  const obs = retryOnError(10, scheduler)(error$);
 
   // Assert
   scheduler.expectObservable(obs).toBe(output, values);
