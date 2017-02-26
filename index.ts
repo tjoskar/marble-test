@@ -11,18 +11,23 @@ function stringifyFrame(x) {
   return `${x.frame}\t${x.notification.kind}\t${value}\t${x.notification.hasValue}`;
 }
 
+function isSameKindOfError(aError, bError) {
+    if (typeof aError !== typeof bError) {
+        return false;
+    }
+    if (!aError && !bError && aError === bError) {
+        return true;
+    }
+    return (aError.constructor && bError.constructor && aError.constructor.name === bError.constructor.name);
+}
+
 function isFrameEqual(aFrame, bFrame) {
-    const aTime = aFrame.frame;
-    const eTime = bFrame.frame;
-    const aKind = aFrame.notification.kind;
-    const eKind = bFrame.notification.kind;
-    const aValue = aFrame.notification.value;
-    const eValue = bFrame.notification.value;
-    const aHasValue = aFrame.notification.hasValue;
-    const eHasValue = bFrame.notification.hasValue;
-    const aError = aFrame.notification.error;
-    const eError = bFrame.notification.error;
-    return (aTime === eTime && aKind === eKind && aValue === eValue && aHasValue === eHasValue && typeof aError === typeof eError);
+  const sameTime = aFrame.frame === bFrame.frame;
+  const sameKind = aFrame.notification.kind === bFrame.notification.kind;
+  const sameValue = aFrame.notification.value === bFrame.notification.value;
+  const hasValue = aFrame.notification.hasValue === bFrame.notification.hasValue;
+  const sameError = isSameKindOfError(aFrame.notification.error, bFrame.notification.error);
+  return (sameTime && sameKind && sameValue && hasValue && sameError);
 }
 
 function isFramesEqual(actual, expected) {
