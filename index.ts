@@ -1,5 +1,6 @@
 import { TestScheduler } from 'rxjs/testing/TestScheduler';
 const chalk = require('chalk');
+const isEqual = require('lodash.isequal');
 
 export const createRxTestScheduler = () => new TestScheduler(assertDeepEqualFrame);
 
@@ -22,9 +23,12 @@ function isSameKindOfError(aError, bError) {
 }
 
 function isFrameEqual(aFrame, bFrame) {
+  if (!aFrame || !bFrame) {
+    return false;
+  }
   const sameTime = aFrame.frame === bFrame.frame;
   const sameKind = aFrame.notification.kind === bFrame.notification.kind;
-  const sameValue = aFrame.notification.value === bFrame.notification.value;
+  const sameValue = isEqual(aFrame.notification.value, bFrame.notification.value);
   const hasValue = aFrame.notification.hasValue === bFrame.notification.hasValue;
   const sameError = isSameKindOfError(aFrame.notification.error, bFrame.notification.error);
   return (sameTime && sameKind && sameValue && hasValue && sameError);
