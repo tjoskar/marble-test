@@ -52,7 +52,7 @@ function isFramesEqual(actual, expected) {
 function createTableRow(table, frame, decoration = v => v) {
   table.cell('frame', decoration(frame.frame));
   table.cell('kind', decoration(frame.kind));
-  table.cell('value', decoration(frame.value));
+  table.cell('value', frame.hasValue ? decoration(frame.value) : undefined);
   table.cell('hasValue', decoration(frame.hasValue));
   table.newRow();
 }
@@ -71,7 +71,7 @@ function assertDeepEqualFrame(actual, expected) {
       .forEach((x, i) => {
         const frame = frameRow(x);
         if (isFrameEqual(actual[i], x)) {
-          createTableRow(expectedTable, frame);
+          createTableRow(expectedTable, frame, chalk.green);
         } else {
           createTableRow(expectedTable, frame, chalk.red);
         }
