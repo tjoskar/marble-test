@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { createRxTestScheduler } from '.';
 
 export const mapToNumber = string$ => string$.map(s => Number(s));
+export const valueToValue = value$ => value$.map(v => v);
 
 export const retryOnError = (delayTime: number, scheduler?) =>{
     return (error$: Observable<Error>) => error$
@@ -17,6 +18,22 @@ export const retryOnError = (delayTime: number, scheduler?) =>{
         }, 0)
         .delay(delayTime, scheduler);
 }
+
+test('map to the same value', () => {
+  // Arrange
+  const scheduler = createRxTestScheduler();
+  const values = { a: { a: 1 }, b: { b: 2 }, 1: { a: 1 }, 2: { b: 2 } };
+  const input =  'a--b|';
+  const output = '1--2|';
+  const values$ = scheduler.createColdObservable(input, values);
+
+  // Act
+  const obs = valueToValue(values$);
+
+  // Assert
+  scheduler.expectObservable(obs).toBe(output, values);
+  scheduler.flush();
+});
 
 test('map to number', () => {
   // Arrange
