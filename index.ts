@@ -1,15 +1,23 @@
 import { TestScheduler } from 'rxjs/testing/TestScheduler';
 const chalk = require('chalk');
 const isEqual = require('lodash.isequal');
+const Table = require('easy-table');
 
 export const createRxTestScheduler = () => new TestScheduler(assertDeepEqualFrame);
 
-function stringifyFrame(x) {
+function frameRow(x) {
   let value = x.notification.value === undefined ? '' : x.notification.value;
   if (typeof value === 'string') {
     value = `'${value}'`;
+  } else if (typeof value === 'object') {
+    value = JSON.stringify(value);
   }
-  return `${x.frame}\t${x.notification.kind}\t${value}\t${x.notification.hasValue}`;
+  return {
+    frame: x.frame,
+    kind: x.notification.kind,
+    value: value,
+    hasValue: x.notification.hasValue
+  };
 }
 
 function isSameKindOfError(aError, bError) {
@@ -41,23 +49,34 @@ function isFramesEqual(actual, expected) {
   return actual.every((aFrame, i) => isFrameEqual(aFrame, expected[i]));
 }
 
+function createTableRow(table, frame, decoration = v => v) {
+  table.cell('frame', decoration(frame.frame));
+  table.cell('kind', decoration(frame.kind));
+  table.cell('value', decoration(frame.value));
+  table.cell('hasValue', decoration(frame.hasValue));
+  table.newRow();
+}
+
 function assertDeepEqualFrame(actual, expected) {
   const equal = isFramesEqual(actual, expected);
-  let message = '';
-  if (!equal && Array.isArray(actual) && Array.isArray(expected)) {
-    message = '\nExpected \n';
-    message += 'frame\tkind\tvalue\thasValue\n';
-    actual.forEach(x => {
-      message += stringifyFrame(x) + '\n';
-    });
-    message += '\nTo equal \n';
-    message += 'frame\tkind\tvalue\thasValue\n';
-    expected.forEach((x, i) => {
-      message += (isFrameEqual(actual[i], x) ? stringifyFrame(x) : chalk.red(stringifyFrame(x))) + '\n';
-    });
-  }
-
   if (!equal) {
-    throw new Error(message || 'Frames not equal!');
+    const actualTable = new Table();
+    const expectedTable = new Table();
+    actual
+      .map(frameRow)
+      .forEach(frame => {
+        createTableRow(actualTable, frame);
+      });
+    expected
+      .forEach((x, i) => {
+        const frame = frameRow(x);
+        if (isFrameEqual(actual[i], x)) {
+          createTableRow(expectedTable, frame);
+        } else {
+          createTableRow(expectedTable, frame, chalk.red);
+        }
+      });
+    const message = '\nExpected \n' + actualTable.toString() + '\nTo equal \n' + expectedTable.toString();
+    throw new Error(message);
   }
 };
