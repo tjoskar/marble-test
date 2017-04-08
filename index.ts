@@ -15,6 +15,7 @@ function frameRow(x) {
   return {
     frame: x.frame,
     kind: x.notification.kind,
+    error: x.notification.error,
     value: value,
     hasValue: x.notification.hasValue
   };
@@ -54,6 +55,7 @@ function createTableRow(table, frame, decoration = v => v) {
   table.cell('kind', decoration(frame.kind));
   table.cell('value', frame.hasValue ? decoration(frame.value) : undefined);
   table.cell('hasValue', decoration(frame.hasValue));
+  table.cell('error', frame.error);
   table.newRow();
 }
 
