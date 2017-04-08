@@ -83,3 +83,21 @@ test('rethrow after 2 tries', () => {
   scheduler.expectObservable(obs).toBe(output, values, error);
   scheduler.flush();
 });
+
+test('unsubscribe after error', () => {
+  // Arrange
+  const scheduler = createRxTestScheduler();
+  const error = new Error();
+  const values = { a: error, 1: 1, 2: 2 };
+  const input =  'a--a--a';
+  const output = '1--2--#';
+  const error$ = scheduler.createColdObservable(input, values);
+
+  // Act
+  const obs = retryOnError(0, scheduler)(error$);
+
+  // Assert
+  scheduler.expectObservable(obs).toBe(output, values, error);
+  scheduler.expectSubscriptions(error$.subscriptions).toBe(['^-----!']);
+  scheduler.flush();
+});
