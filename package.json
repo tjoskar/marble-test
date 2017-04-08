@@ -1,6 +1,6 @@
 {
   "name": "marble-test",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Helps you write marble tests",
   "license": "MIT",
   "repository": "tjoskar/marble-test",
@@ -17,7 +17,8 @@
     "test": "tsc && ava"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "keywords": [
     ""
