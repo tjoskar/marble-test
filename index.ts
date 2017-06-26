@@ -1,4 +1,5 @@
 import { TestScheduler } from 'rxjs/testing/TestScheduler';
+export { resetRxScheduler, rxSchedulerInjector } from './injector';
 const chalk = require('chalk');
 const isEqual = require('lodash.isequal');
 const Table = require('easy-table');
