@@ -23,7 +23,10 @@
     "injector.d.ts"
   ],
   "keywords": [
-    "rxjs", "marble", "marble-diagram", "testning"
+    "rxjs",
+    "marble",
+    "marble-diagram",
+    "testning"
   ],
   "peerDependencies": {
     "rxjs": ">=5.0.0"
