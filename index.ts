@@ -23,13 +23,13 @@ function frameRow(x) {
 }
 
 function isSameKindOfError(aError, bError) {
-    if (typeof aError !== typeof bError) {
-        return false;
-    }
-    if (!aError && !bError && aError === bError) {
-        return true;
-    }
-    return (aError.constructor && bError.constructor && aError.constructor.name === bError.constructor.name);
+  if (typeof aError !== typeof bError) {
+    return false;
+  }
+  if (!aError && !bError && aError === bError) {
+    return true;
+  }
+  return (aError.constructor && bError.constructor && aError.constructor.name === bError.constructor.name);
 }
 
 function isFrameEqual(aFrame, bFrame) {
@@ -89,9 +89,7 @@ function assertDeepEqualFrame(actual, expected) {
     const expectedTable = new Table();
     actual
       .map(frameRow)
-      .forEach(frame => {
-        createTableRow(actualTable, frame);
-      });
+      .forEach(frame => createTableRow(actualTable, frame));
     expected
       .forEach((x, i) => {
         const frame = frameRow(x);
