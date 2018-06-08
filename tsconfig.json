@@ -5,10 +5,11 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "lib": ["es2017", "dom"],
-    "types" : ["node"],
+    "types": ["node"],
     "moduleResolution": "node",
     "alwaysStrict": true,
     "noImplicitThis": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   }
 }

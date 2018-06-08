@@ -1,36 +1,35 @@
 > Helps you write marble tests
 
-
 ## Install
 
 ```
 $ npm install --save-dev marble-test
 ```
 
-
 ## Example usage
 
 ```js
-import { createRxTestScheduler } from 'marble-test';
+import { createRxTestScheduler } from 'marble-test'
 
-export const mapToNumber$ = string$ => string$.map(s => Number(s));
+export const mapToNumber$ = string$ => string$.map(s => Number(s))
 
 test('map to number', () => {
   // Arrange
-  const scheduler = createRxTestScheduler();
-  const values = { a: '1', b: '2', 1: 1, 2: 2 };
-  const input =  'a--b|';
-  const output = '1--2|';
-  const strings$ = scheduler.createColdObservable(input, values);
-  
+  const scheduler = createRxTestScheduler()
+  const values = { a: '1', b: '2', 1: 1, 2: 2 }
+  const input = 'a--b|'
+  const output = '1--2|'
+  const strings$ = scheduler.createColdObservable(input, values)
+
   // Act
-  const obs = mapToNumber(strings$);
+  const obs = mapToNumber(strings$)
 
   // Assert
-  scheduler.expectObservable(obs).toBe(output, values);
-  scheduler.flush();
-});
+  scheduler.expectObservable(obs).toBe(output, values)
+  scheduler.flush()
+})
 ```
+
 See the [test file](test.ts) for more examples
 
 Gives detailed outputs on assert failure.
@@ -38,45 +37,45 @@ e.g., You will get the following output when changing `output` above to `a--2|`
 
 ![](/images/error.png)
 
-## Inject your test scheduler
+## Inject your test scheduler (in 2.3.0 and rxjs@5)
 
 Let's say you have a simple function:
+
 ```js
-const debounceValue = value$ => value$.debounceTime(10);
+const debounceValue = value$ => value$.debounceTime(10)
 ```
 
 In order to test this function you need to pass along your test scheduler:
 
 ```js
-const debounceValue = (value$, scheduler?) => value$.debounceTime(10, scheduler);
+const debounceValue = (value$, scheduler?) => value$.debounceTime(10, scheduler)
 ```
 
 Unless you use `rxSchedulerInjector` which will inject the scheduler for you:
 
 ```js
+import 'rxjs/add/operator/debounceTime'
+import test from 'ava'
+import { Observable } from 'rxjs/Observable'
+import { createRxTestScheduler, rxSchedulerInjector } from 'marble-test'
 
-import 'rxjs/add/operator/debounceTime';
-import test from 'ava';
-import { Observable } from 'rxjs/Observable';
-import { createRxTestScheduler, rxSchedulerInjector } from 'marble-test';
-
-const debounceValue = value$ => value$.debounceTime(10);
+const debounceValue = value$ => value$.debounceTime(10)
 
 test('debounce values', () => {
   // Arrange
-  const scheduler = createRxTestScheduler();
-  rxSchedulerInjector(scheduler, 'debounceTime');
-  const input =  'a--b---|';
-  const output = '-a--b--|';
-  const values$ = scheduler.createColdObservable(input);
+  const scheduler = createRxTestScheduler()
+  rxSchedulerInjector(scheduler, 'debounceTime')
+  const input = 'a--b---|'
+  const output = '-a--b--|'
+  const values$ = scheduler.createColdObservable(input)
 
   // Act
-  const obs = debounceValue(values$);
+  const obs = debounceValue(values$)
 
   // Assert
-  scheduler.expectObservable(obs).toBe(output);
-  scheduler.flush();
-});
+  scheduler.expectObservable(obs).toBe(output)
+  scheduler.flush()
+})
 ```
 
 This will however monkey patch `Observable.prototype`. You can always reset the methods to the originals with `resetRxScheduler`. eg. `test.afterEach(resetRxScheduler);`
