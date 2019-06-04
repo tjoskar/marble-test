@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "outDir": "dist",
     "target": "es6",
     "noImplicitAny": false,
     "sourceMap": true,
     "lib": ["es2017", "dom"],
-    "types": ["node"],
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
     "declaration": true,

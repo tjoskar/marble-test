@@ -1,11 +1,11 @@
 import { TestScheduler } from 'rxjs/testing'
-const chalk = require('chalk')
-const isEqual = require('lodash.isequal')
-const Table = require('easy-table')
+import chalk from 'chalk';
+import isEqual from 'lodash.isequal'
+import Table from 'easy-table';
 
 export const createRxTestScheduler = () => new TestScheduler(assertDeepEqual)
 
-function frameRow(x) {
+function frameRow(x: any) {
   let value = x.notification.value === undefined ? '' : x.notification.value
   if (typeof value === 'string') {
     value = `'${value}'`
@@ -21,7 +21,7 @@ function frameRow(x) {
   }
 }
 
-function isSameKindOfError(aError, bError) {
+function isSameKindOfError(aError: any, bError: any) {
   if (typeof aError !== typeof bError) {
     return false
   }
@@ -35,7 +35,7 @@ function isSameKindOfError(aError, bError) {
   )
 }
 
-function isFrameEqual(aFrame, bFrame) {
+function isFrameEqual(aFrame: any, bFrame: any) {
   if (!aFrame || !bFrame) {
     return false
   }
@@ -50,20 +50,14 @@ function isFrameEqual(aFrame, bFrame) {
   return sameTime && sameKind && sameValue && hasValue && sameError
 }
 
-function isFramesEqual(actual, expected) {
-  if (
-    !(
-      Array.isArray(actual) &&
-      Array.isArray(expected) &&
-      actual.length === expected.length
-    )
-  ) {
+function isFramesEqual(actual: any, expected: any) {
+  if (!(Array.isArray(actual) && Array.isArray(expected) && actual.length === expected.length)) {
     return false
   }
   return actual.every((aFrame, i) => isFrameEqual(aFrame, expected[i]))
 }
 
-function isSubscriptionEqual(a, b) {
+function isSubscriptionEqual(a: any, b: any) {
   if (!a || !b) {
     return false
   }
@@ -72,20 +66,14 @@ function isSubscriptionEqual(a, b) {
   )
 }
 
-function isSubscriptionsEqual(actual, expected) {
-  if (
-    !(
-      Array.isArray(actual) &&
-      Array.isArray(expected) &&
-      actual.length === expected.length
-    )
-  ) {
+function isSubscriptionsEqual(actual: any, expected: any) {
+  if (!(Array.isArray(actual) && Array.isArray(expected) && actual.length === expected.length)) {
     return false
   }
   return actual.every((aFrame, i) => isSubscriptionEqual(aFrame, expected[i]))
 }
 
-function createTableRow(table, frame, decoration = v => v) {
+function createTableRow(table: any, frame: any, decoration = (v: any) => v) {
   table.cell('frame', decoration(frame.frame))
   table.cell('kind', decoration(frame.kind))
   table.cell('value', frame.hasValue ? decoration(frame.value) : undefined)
@@ -94,7 +82,7 @@ function createTableRow(table, frame, decoration = v => v) {
   table.newRow()
 }
 
-function assertDeepEqual(actual, expected) {
+function assertDeepEqual(actual: any, expected: any) {
   if (actual.length && actual[0].subscribedFrame === undefined) {
     assertDeepEqualFrame(actual, expected)
   } else {
@@ -102,13 +90,13 @@ function assertDeepEqual(actual, expected) {
   }
 }
 
-function assertDeepEqualFrame(actual, expected) {
+function assertDeepEqualFrame(actual: any, expected: any) {
   const equal = isFramesEqual(actual, expected)
   if (!equal) {
     const actualTable = new Table()
     const expectedTable = new Table()
-    actual.map(frameRow).forEach(frame => createTableRow(actualTable, frame))
-    expected.forEach((x, i) => {
+    actual.map(frameRow).forEach((frame: any) => createTableRow(actualTable, frame))
+    expected.forEach((x: any, i: any) => {
       const frame = frameRow(x)
       if (isFrameEqual(actual[i], x)) {
         createTableRow(expectedTable, frame, chalk.green)
@@ -125,18 +113,18 @@ function assertDeepEqualFrame(actual, expected) {
   }
 }
 
-function assertDeepEqualSubscription(actual, expected) {
+function assertDeepEqualSubscription(actual: any, expected: any) {
   if (!isSubscriptionsEqual(actual, expected)) {
     const actualTable = new Table()
     const expectedTable = new Table()
 
-    actual.forEach(s => {
+    actual.forEach((s: any) => {
       actualTable.cell('Subscribed Frame', s.subscribedFrame)
       actualTable.cell('Unsubscribed Frame', s.unsubscribedFrame)
       actualTable.newRow()
     })
 
-    expected.forEach((s, i) => {
+    expected.forEach((s: any, i: any) => {
       if (isSubscriptionEqual(s, actual[i])) {
         expectedTable.cell('Subscribed Frame', chalk.green(s.subscribedFrame))
         expectedTable.cell('Unsubscribed Frame', chalk.green(s.unsubscribedFrame))

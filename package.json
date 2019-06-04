@@ -10,18 +10,14 @@
     "url": "http://oskarkarlsson.nu"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=10"
   },
   "scripts": {
-    "prepublish": "tsc",
-    "test": "tsc && ava"
+    "build": "tsc",
+    "test": "jest",
+    "preversion": "npm test",
+    "postversion": "make && git push && git push --tags"
   },
-  "files": [
-    "index.js",
-    "index.d.ts",
-    "injector.js",
-    "injector.d.ts"
-  ],
   "keywords": [
     "rxjs",
     "marble",
@@ -32,14 +28,23 @@
     "rxjs": ">=6.0.0"
   },
   "dependencies": {
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "easy-table": "^1.1.1",
     "lodash.isequal": "^4.5.0"
   },
   "devDependencies": {
-    "@types/node": "^10.3.2",
-    "ava": "^0.25.0",
-    "rxjs": "^6.2.0",
-    "typescript": "^2.9.1"
+    "@types/easy-table": "0.0.32",
+    "@types/jest": "^24.0.13",
+    "@types/lodash.isequal": "^4.5.5",
+    "@types/node": "^12.0.4",
+    "jest": "^24.8.0",
+    "rxjs": "^6.5.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.1"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [ "<rootDir>/src/__tests__/*.ts" ]
   }
 }
