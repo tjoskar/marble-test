@@ -1,6 +1,6 @@
 {
   "name": "marble-test",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Helps you write marble tests",
   "license": "MIT",
   "repository": "tjoskar/marble-test",
@@ -45,6 +45,8 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": [ "<rootDir>/src/__tests__/*.ts" ]
+    "testMatch": [
+      "<rootDir>/src/__tests__/*.ts"
+    ]
   }
 }
