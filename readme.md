@@ -11,7 +11,7 @@ $ npm install --save-dev marble-test
 ```js
 import { createRxTestScheduler } from 'marble-test'
 
-const mapToNumber$ = string$ => string$.map(s => Number(s))
+const mapToNumber$ = string$ => string$.pipe(map(s => Number(s)))
 
 test('map to number', () => {
   // Arrange
@@ -22,7 +22,7 @@ test('map to number', () => {
   const strings$ = scheduler.createColdObservable(input, values)
 
   // Act
-  const obs = mapToNumber(strings$)
+  const obs = mapToNumber$(strings$)
 
   // Assert
   scheduler.expectObservable(obs).toBe(output, values)
@@ -35,7 +35,7 @@ test('map to number', () => {
 ```js
 import { marble } from 'marble-test/jest'
 
-const mapToNumber$ = string$ => string$.map(s => Number(s))
+const mapToNumber$ = string$ => string$.pipe(map(s => Number(s)))
 
 marble('map to number', m => {
   // Arrange
@@ -45,7 +45,7 @@ marble('map to number', m => {
   const strings$ = m.cold(input, values)
 
   // Act
-  const obs = mapToNumber(strings$)
+  const obs = mapToNumber$(strings$)
 
   // Assert
   m.expectObservable(obs).toBe(output, values)
